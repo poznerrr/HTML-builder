@@ -10,12 +10,14 @@ fs.writeFile(
     console.log("Категорически приветствую, введите текст который будет записан в text.txt:");
   }
 );
-stdin.on('data', chunk => {
-  if (chunk.toString().trim() === 'exit') {
+stdin.on('data', data => {
+  if (data.toString().trim() === 'exit') {
     exitFromStdin();
   } else {
-    const output = fs.createWriteStream(newFile);
-    output.write(chunk);
+    fs.appendFile(newFile, data.toString().replace('\r\n', ''), (err) => {
+      if (err) { console.log(err) };
+    });
+
   }
 }
 );
